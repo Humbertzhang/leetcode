@@ -23,8 +23,8 @@ public:
                 l2 = l2->next;
             }
             
-            ptr -> val = carry % 10;
-            carry /= 10;
+            ptr -> val = carry % 10; //个位
+            carry /= 10;             //十位
             
             if(l1 != NULL || l2 != NULL || carry != 0){
                 ptr = (ptr->next = new ListNode(0));

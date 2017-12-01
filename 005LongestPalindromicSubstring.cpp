@@ -1,33 +1,44 @@
-/*
-		Wrong Answer
-		仅仅求正序与反序的最长公共子串不行
-        求两个字符串的最长公共子串
-        字符串s, s2.
-        判断s[i]为起点的各个子串在b中是否能找到相同子串
-        如果能的话看看是不是sret小，如果是，temp子串替换sret.
-        i的值递增.
-        注意有s2.find()这种用法
-        有reverse(begin, end)这种写法
-*/
+/*Dynamic Programming
+ *
+ *Study from http://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
+ * */
 class Solution {
 public:
     string longestPalindrome(string s) {
-        string s2 = s;
-        reverse(s2.begin(), s2.end());
-        string sret;
-        
-        if(s.size() > s2.size())
-            swap(s, s2);
-        
-        for(int i = 0; i < s.size(); i++){
-            for(int j = i; j < s.size(); j ++ ){
-                string temp = s.substr(i, j-i+1);
-                if(int(s2.find(temp)) < 0) //s2中找不到相同字符串
-                    break;
-                else if(sret.size() < temp.size())
-                    sret = temp;
+        if(s.empty() || s.size() == 1){
+            return s;
+        }
+        int start = 0, maxlen = 0;
+        int size = s.size();
+        bool table[size][size] = {0};
+        //自己跟自己是回文
+        for(int i = 0; i < size; i++){
+            table[i][i] = true;
+        }
+        start = size - 1;
+        maxlen = 1;
+        //只有两个连在一起且是一样的才是长度为2的回文
+        for(int i = 0; i < size - 1; i++){
+            if(s[i] == s[i+1]){
+                table[i][i+1] = true;
+                start = i;
+                maxlen = 2;
             }
         }
-        return sret;
+        //动态检查,如果table[i+1][j-1]是回文的，并且str[i] == str[j], 则table[i][j]也是回文的了
+        for(int k = 3; k <= size; k++){
+            for(int i = 0; i < size-k+1; i++){
+                int j = i + k -1;
+                if(table[i+1][j-1] && s[i] == s[j]){
+                    table[i][j] = true;
+                    if(k >  maxlen){
+                        start = i;
+                        maxlen = k;
+                    }
+                }
+            }
+        }
+        string ret = s.substr(start, maxlen);
+        return ret;
     }
 };

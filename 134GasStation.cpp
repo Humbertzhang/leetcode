@@ -33,3 +33,31 @@ public:
         return -1;
     }
 };
+
+
+/*2018-11-15*/
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        for(int i = 0; i < gas.size(); i++) {
+            int index = i;
+            int hgas = gas[index];
+            int count = 0;
+            while(true) {
+                hgas -= cost[index];
+                if(hgas >= 0) {
+                    count += 1;
+                    if(count == gas.size()) {
+                        return i;
+                    }
+                }
+                else {
+                    break;
+                }
+                index = (index+1)%gas.size();
+                hgas += gas[index];
+            }
+        }
+        return -1;
+    }
+};

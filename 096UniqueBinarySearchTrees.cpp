@@ -36,3 +36,29 @@ public:
         return count;
     }
 };
+
+
+/*2018-12-30*/
+class Solution {
+public:
+    int numTrees(int n) {
+        if(n <= 2) {
+            return n;
+        }
+        
+        int f[n+1] = {0};
+        f[0] = 1;
+        f[1] = 1;
+        f[2] = 2;
+        
+        for(int i = 3; i <= n; i++) {
+            int solutions = 0;
+            for(int j = 1; j <= i; j++) {
+                // 以j为根节点，看左子树和右子树分别有多少情况.每个子树的情况即为其f[可能节点个数]
+                solutions += f[j-1] * f[i-j];
+            }
+            f[i] = solutions;
+        }
+        return f[n];
+    }
+};

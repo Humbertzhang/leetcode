@@ -18,6 +18,9 @@ public:
             return 0;
         }
         int minr = nums.size();
+		/*
+		 * 由0,0开始往后扫描，会将所有会出现的组合扫描到
+		 * */
         while(true) {
             if(end > nums.size()-1 || start > nums.size()-1 || end < start) {break;} 
             int sum = record[end] - record[start] + nums[start];
